@@ -26,22 +26,30 @@ public:
     Planet (int planet, float planetScale, float orbitScale);
     ~Planet ();
     void draw();
-    void update();
+    void update(int velocity);
     void drawOrbit();
     void getTranslationPosition(float t);
     float pos[3];
     
 private:
     Texture targas;
+    Texture targasRing;
+    Planet* moon;
     int planetNumber;
     float perihelion;
+    float eccentricity;
+    float orbitalInclination;
     float radius;
     float day; // ellipse
+    float hour;
     float currentDay; // ellipse
+    float currentHour;
     float b; // ellipse
     float a; // ellipse (averageDistance)
-    float degree;
+    float obliquity;
+    float rotationAngle;
     float translationDays;
+    float rotationHours;
 };
 
 #endif __PLANET

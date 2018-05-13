@@ -56,15 +56,17 @@ GLfloat* mat0_diffuse;
 GLfloat* mat0_shininess;
 GLfloat* light0_position;
 
-// ==== PLAY ====
+// ==== OTHERS ====
 bool play;
+int velocity;
 
 
 void init( void )
 {
-    // ==== PLAY ====
+    // ==== OTHERS (INIT) ====
     
     play = false;
+    velocity = 8;
     
     // ==== CAMERA (INIT) ====
     
@@ -73,32 +75,28 @@ void init( void )
     //sceneCam.setPos(500, 100.0, -250);
     // sceneCam.setPos(0, 0, -2000000); // for real
     sceneCam.setPos(0, 0, -1400); // for ficticial
-    sceneCam.setDirVec(0,-0.2,1);
+    sceneCam.setDirVec(0, 0, 1);
+    sceneCam.setUpVec(0, -1, 0);
     sceneCam.setPivot(0,0,0);
     sceneCam.fov = 45;
-    sceneCam.near_plane = 1;
+    sceneCam.near_plane = 0.1;
     sceneCam.far_plane = 4000000.0f;
     
-    
-    
-    //posX = 0;
     posX = 0;
     posY = 0;
     posZ = -1400;
-    //lightCam.setPos(56,86,-0.5);
-    //lightCam.setPos(0,2000,-2500);
-    lightCam.setPos(posX, posY, posZ);
-    //lightCam.setDirVec(0.56, -0.4, 0.73);
-    //lightCam.setDirVec(0, -40, 50);
+    lightCam.setPos(0, 0, -1400);
     lightCam.setDirVec(0, 0, 1);
+    //lightCam.setPos(-3500, -2000, -1000);  // perspective
+    //lightCam.setDirVec(1, 0.25, 0); // perspective
     lightCam.setPivot(0,0,0);
-    //lightCam.fov = 45;
     lightCam.fov = 45;
     lightCam.setUpVec(0, -1, 0);
     lightCam.near_plane = 0.1;
     lightCam.far_plane = 4000000.0f;
-    //currentCamera = &sceneCam;
-    currentCamera = &lightCam;
+    
+    
+    currentCamera = &lightCam; //    INITIAL CAMERA
     
     // ==== SKYBOX (INIT) =====
     
@@ -248,28 +246,30 @@ void keys (unsigned char key, int x, int y)
                 sceneCam.moveLeft(100);
             }
             break;
+            /*
+             case 'w':
+             if(currentCamera == &lightCam){
+             lightCam.moveUp(100);
+             } else{
+             sceneCam.moveUp(100);
+             }
+             break;
+             case 's':
+             if(currentCamera == &lightCam){
+             lightCam.moveDown(100);
+             } else {
+             sceneCam.moveDown(100);
+             }
+             break;
+             */
         case 'w':
-            if(currentCamera == &lightCam){
-                lightCam.moveUp(100);
-            } else{
-                sceneCam.moveUp(100);
-            }
-            break;
-        case 's':
-            if(currentCamera == &lightCam){
-                lightCam.moveDown(100);
-            } else {
-                sceneCam.moveDown(100);
-            }
-            break;
-        case '+':
             if(currentCamera == &lightCam){
                 lightCam.moveForward(100);
             } else {
                 sceneCam.moveForward(100);
             }
             break;
-        case '-':
+        case 's':
             if(currentCamera == &lightCam){
                 lightCam.moveBackward(100);
             } else {
@@ -285,27 +285,24 @@ void keys (unsigned char key, int x, int y)
             } else {
                 play = true;
             }
+            break;
+            
+            //  ==== VELOCITY ====
+            
+        case '+':
+            if(velocity > 2){
+                velocity -= 2;
+            }
+            break;
+        case '-':
+            velocity += 2;
+            break;
     }
 }
 
 void display( void )
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    
-    glPushMatrix();
-    //glBegin(GL_POLYGON);
-    //glColor3f(0, 1, 0);
-    glScalef(5, 0.5, 0.5 );
-    //glTranslatef(50, 0, 0);
-    //glutSolidCube(50);
-    //glEnd();
-    glPopMatrix();
-    
-    glPushMatrix();
-    glScalef(0.5, 5, 0.5 );
-    glutSolidCube(50);
-    glPopMatrix();
-    
     
     //glPopMatrix(); // RESET
     //glPopMatrix();
@@ -316,33 +313,29 @@ void display( void )
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat0_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, mat0_shininess);
     
-    
-    
     // ==== PLANET (DISPLAY) ====
-    //glPushMatrix();
-    {
-        sun->draw();
-        mercury->draw();
-        venus->draw();
-        earth->draw();
-        mars->draw();
-        jupiter->draw();
-        saturn->draw();
-        uranus->draw();
-        neptune->draw();
-    }
-    //glPopMatrix();
+    
+    sun->draw();
+    mercury->draw();
+    venus->draw();
+    earth->draw();
+    mars->draw();
+    jupiter->draw();
+    saturn->draw();
+    uranus->draw();
+    neptune->draw();
+    
+    sceneCam.setPos(earth->pos[0], earth->pos[1], earth->pos[2]-800);
     
     // ==== CAMERA (DISPLAY) ====
     
     currentCamera->setView();
-    //sceneCam.setPos(earth->pos[0], earth->pos[1], earth->pos[2]+100);
+    //sceneCam.setPos(earth->pos[0], earth->pos[1], earth->pos[2]+200);
     //sceneCam.draw();
     
     // ==== SKYBOX (DISPLAY) ====
-    //glPushMatrix();
+    
     skybox->draw();
-    //glPopMatrix();
     
     glutSwapBuffers();
 }
@@ -350,14 +343,15 @@ void display( void )
 void idle( void )
 {
     if(play){
-        mercury->update();
-        venus->update();
-        earth->update();
-        mars->update();
-        jupiter->update();
-        saturn->update();
-        uranus->update();
-        neptune->update();
+        sun->update(velocity);
+        mercury->update(velocity);
+        venus->update(velocity);
+        earth->update(velocity);
+        mars->update(velocity);
+        jupiter->update(velocity);
+        saturn->update(velocity);
+        uranus->update(velocity);
+        neptune->update(velocity);
     }
     glutPostRedisplay();
 }
