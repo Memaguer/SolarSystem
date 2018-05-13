@@ -7,7 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A7685DA220A5FD9900F39B09 /* cPlanet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7685DA020A5FD9900F39B09 /* cPlanet.cpp */; };
+		A7685DA520A5FDAA00F39B09 /* vecs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7685DA320A5FDAA00F39B09 /* vecs.cpp */; };
+		A7685DA820A5FDB500F39B09 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7685DA620A5FDB500F39B09 /* Camera.cpp */; };
+		A7685DAE20A5FE6F00F39B09 /* cSkybox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7685DAC20A5FE6F00F39B09 /* cSkybox.cpp */; };
 		A77E595220A4C3DE00EE246E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A77E595120A4C3DE00EE246E /* main.cpp */; };
+		A77E595A20A4C3ED00EE246E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A77E595920A4C3ED00EE246E /* OpenGL.framework */; };
+		A77E595C20A4C3F300EE246E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A77E595B20A4C3F300EE246E /* GLUT.framework */; };
+		A77E596120A4C81A00EE246E /* cTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A77E595F20A4C81A00EE246E /* cTexture.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +30,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A7685DA020A5FD9900F39B09 /* cPlanet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cPlanet.cpp; sourceTree = "<group>"; };
+		A7685DA120A5FD9900F39B09 /* cPlanet.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cPlanet.hpp; sourceTree = "<group>"; };
+		A7685DA320A5FDAA00F39B09 /* vecs.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vecs.cpp; sourceTree = "<group>"; };
+		A7685DA420A5FDAA00F39B09 /* vecs.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vecs.hpp; sourceTree = "<group>"; };
+		A7685DA620A5FDB500F39B09 /* Camera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		A7685DA720A5FDB500F39B09 /* Camera.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
+		A7685DAC20A5FE6F00F39B09 /* cSkybox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cSkybox.cpp; sourceTree = "<group>"; };
+		A7685DAD20A5FE6F00F39B09 /* cSkybox.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cSkybox.hpp; sourceTree = "<group>"; };
 		A77E594E20A4C3DE00EE246E /* SolarSystem */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SolarSystem; sourceTree = BUILT_PRODUCTS_DIR; };
 		A77E595120A4C3DE00EE246E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		A77E595920A4C3ED00EE246E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		A77E595B20A4C3F300EE246E /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		A77E595F20A4C81A00EE246E /* cTexture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cTexture.cpp; sourceTree = "<group>"; };
+		A77E596020A4C81A00EE246E /* cTexture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cTexture.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +51,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A77E595C20A4C3F300EE246E /* GLUT.framework in Frameworks */,
+				A77E595A20A4C3ED00EE246E /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +64,7 @@
 			children = (
 				A77E595020A4C3DE00EE246E /* SolarSystem */,
 				A77E594F20A4C3DE00EE246E /* Products */,
+				A77E595820A4C3EC00EE246E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,9 +79,44 @@
 		A77E595020A4C3DE00EE246E /* SolarSystem */ = {
 			isa = PBXGroup;
 			children = (
-				A77E595120A4C3DE00EE246E /* main.cpp */,
+				A77E595D20A4C79D00EE246E /* header */,
+				A77E595E20A4C7A400EE246E /* source */,
 			);
 			path = SolarSystem;
+			sourceTree = "<group>";
+		};
+		A77E595820A4C3EC00EE246E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A77E595B20A4C3F300EE246E /* GLUT.framework */,
+				A77E595920A4C3ED00EE246E /* OpenGL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A77E595D20A4C79D00EE246E /* header */ = {
+			isa = PBXGroup;
+			children = (
+				A7685DA720A5FDB500F39B09 /* Camera.hpp */,
+				A7685DA120A5FD9900F39B09 /* cPlanet.hpp */,
+				A7685DAD20A5FE6F00F39B09 /* cSkybox.hpp */,
+				A77E596020A4C81A00EE246E /* cTexture.hpp */,
+				A7685DA420A5FDAA00F39B09 /* vecs.hpp */,
+			);
+			path = header;
+			sourceTree = "<group>";
+		};
+		A77E595E20A4C7A400EE246E /* source */ = {
+			isa = PBXGroup;
+			children = (
+				A7685DA620A5FDB500F39B09 /* Camera.cpp */,
+				A7685DA020A5FD9900F39B09 /* cPlanet.cpp */,
+				A7685DAC20A5FE6F00F39B09 /* cSkybox.cpp */,
+				A77E595F20A4C81A00EE246E /* cTexture.cpp */,
+				A77E595120A4C3DE00EE246E /* main.cpp */,
+				A7685DA320A5FDAA00F39B09 /* vecs.cpp */,
+			);
+			path = source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -118,7 +175,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7685DA220A5FD9900F39B09 /* cPlanet.cpp in Sources */,
 				A77E595220A4C3DE00EE246E /* main.cpp in Sources */,
+				A7685DA820A5FDB500F39B09 /* Camera.cpp in Sources */,
+				A7685DA520A5FDAA00F39B09 /* vecs.cpp in Sources */,
+				A77E596120A4C81A00EE246E /* cTexture.cpp in Sources */,
+				A7685DAE20A5FE6F00F39B09 /* cSkybox.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
