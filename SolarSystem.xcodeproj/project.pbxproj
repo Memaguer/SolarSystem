@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A7177ABE20A9E52B00BF66A8 /* glm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7177ABC20A9E52B00BF66A8 /* glm.cpp */; };
+		A7177AC120A9E54A00BF66A8 /* cSpacecraft.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7177ABF20A9E54A00BF66A8 /* cSpacecraft.cpp */; };
+		A7177AC320A9E56700BF66A8 /* glmimg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7177AC220A9E56700BF66A8 /* glmimg.cpp */; };
 		A7685DA220A5FD9900F39B09 /* cPlanet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7685DA020A5FD9900F39B09 /* cPlanet.cpp */; };
 		A7685DA520A5FDAA00F39B09 /* vecs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7685DA320A5FDAA00F39B09 /* vecs.cpp */; };
 		A7685DA820A5FDB500F39B09 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7685DA620A5FDB500F39B09 /* Camera.cpp */; };
@@ -30,6 +33,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A7177ABC20A9E52B00BF66A8 /* glm.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = glm.cpp; sourceTree = "<group>"; };
+		A7177ABD20A9E52B00BF66A8 /* glm.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = glm.hpp; sourceTree = "<group>"; };
+		A7177ABF20A9E54A00BF66A8 /* cSpacecraft.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cSpacecraft.cpp; sourceTree = "<group>"; };
+		A7177AC020A9E54A00BF66A8 /* cSpacecraft.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cSpacecraft.hpp; sourceTree = "<group>"; };
+		A7177AC220A9E56700BF66A8 /* glmimg.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = glmimg.cpp; sourceTree = "<group>"; };
 		A7685DA020A5FD9900F39B09 /* cPlanet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cPlanet.cpp; sourceTree = "<group>"; };
 		A7685DA120A5FD9900F39B09 /* cPlanet.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cPlanet.hpp; sourceTree = "<group>"; };
 		A7685DA320A5FDAA00F39B09 /* vecs.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vecs.cpp; sourceTree = "<group>"; };
@@ -100,7 +108,9 @@
 				A7685DA720A5FDB500F39B09 /* Camera.hpp */,
 				A7685DA120A5FD9900F39B09 /* cPlanet.hpp */,
 				A7685DAD20A5FE6F00F39B09 /* cSkybox.hpp */,
+				A7177AC020A9E54A00BF66A8 /* cSpacecraft.hpp */,
 				A77E596020A4C81A00EE246E /* cTexture.hpp */,
+				A7177ABD20A9E52B00BF66A8 /* glm.hpp */,
 				A7685DA420A5FDAA00F39B09 /* vecs.hpp */,
 			);
 			path = header;
@@ -112,7 +122,10 @@
 				A7685DA620A5FDB500F39B09 /* Camera.cpp */,
 				A7685DA020A5FD9900F39B09 /* cPlanet.cpp */,
 				A7685DAC20A5FE6F00F39B09 /* cSkybox.cpp */,
+				A7177ABF20A9E54A00BF66A8 /* cSpacecraft.cpp */,
 				A77E595F20A4C81A00EE246E /* cTexture.cpp */,
+				A7177ABC20A9E52B00BF66A8 /* glm.cpp */,
+				A7177AC220A9E56700BF66A8 /* glmimg.cpp */,
 				A77E595120A4C3DE00EE246E /* main.cpp */,
 				A7685DA320A5FDAA00F39B09 /* vecs.cpp */,
 			);
@@ -176,11 +189,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7685DA220A5FD9900F39B09 /* cPlanet.cpp in Sources */,
+				A7177AC320A9E56700BF66A8 /* glmimg.cpp in Sources */,
 				A77E595220A4C3DE00EE246E /* main.cpp in Sources */,
 				A7685DA820A5FDB500F39B09 /* Camera.cpp in Sources */,
+				A7177ABE20A9E52B00BF66A8 /* glm.cpp in Sources */,
 				A7685DA520A5FDAA00F39B09 /* vecs.cpp in Sources */,
 				A77E596120A4C81A00EE246E /* cTexture.cpp in Sources */,
 				A7685DAE20A5FE6F00F39B09 /* cSkybox.cpp in Sources */,
+				A7177AC120A9E54A00BF66A8 /* cSpacecraft.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

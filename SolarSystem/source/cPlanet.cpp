@@ -16,6 +16,7 @@
 
 Planet::Planet(int planet, float planetScale, float orbitScale)
 {
+    
     glGenTextures(1, &targas.texID);
     glBindTexture(GL_TEXTURE_2D, targas.texID);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
@@ -263,8 +264,6 @@ Planet::Planet(int planet, float planetScale, float orbitScale)
     // THIS DON'T USE MIPMAPS
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, targas.width, targas.height, 0, GL_RGB, GL_UNSIGNED_BYTE, targas.imageData);
     
-    glBindTexture(GL_TEXTURE_2D, 0);
-    
     // ==== OTHER ATTRIBUTES ====
     if(planetNumber == 3){
         moon = new Planet(9, planetScale, 1);
@@ -284,12 +283,7 @@ Planet::Planet(int planet, float planetScale, float orbitScale)
         LoadTGA(&targasRing, "/Users/MemoBG/Documents/ITC/8º semestre/Gráficas Computacionales/Proyectos/SolarSystem/SolarSystem/assets/saturn-ring.tga");
         // THIS DON'T USE MIPMAPS
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, targasRing.width, targasRing.height, 0, GL_RGB, GL_UNSIGNED_BYTE, targasRing.imageData);
-        
-        glBindTexture(GL_TEXTURE_2D, 0);
     }
-    
-    
-    
 }
 
 Planet::~Planet()
@@ -299,8 +293,7 @@ Planet::~Planet()
 
 void Planet::drawOrbit()
 {
-    //glPushMatrix();
-    glColor3f(0, 0, 0);
+    glColor3f(1.0, 1.0, 1.0);
     glLineWidth(0.5);
     glBegin(GL_LINE_LOOP);
     float x = 0;
@@ -312,7 +305,6 @@ void Planet::drawOrbit()
         glVertex3f(xc, 0, zc);
     }
     glEnd();
-    //glPopMatrix();
 }
 
 void Planet::getTranslationPosition(float t)
@@ -326,12 +318,9 @@ void Planet::getTranslationPosition(float t)
 
 void Planet::draw()
 {
-    
-    // ====== CITA [1] ======
-    GLUquadric *qobj = gluNewQuadric();
-    gluQuadricTexture(qobj,GL_TRUE);
-    glBindTexture(GL_TEXTURE_2D,targas.texID);
-    
+    GLUquadric *planetQuad = gluNewQuadric();
+    gluQuadricTexture(planetQuad,GL_TRUE);
+    glBindTexture(GL_TEXTURE_2D, targas.texID);
     if(planetNumber != 0){
         glPushMatrix();
         {
@@ -345,9 +334,8 @@ void Planet::draw()
             glRotatef(90, 1, 0, 0);
             glRotatef(obliquity, 1, 0, 0);
             glRotatef(rotationAngle, 0, 0, 1);
-            gluSphere(qobj, radius, 50, 50);
-            gluDeleteQuadric(qobj);
-            
+            gluSphere(planetQuad, radius, 50, 50);
+            gluDeleteQuadric(planetQuad);
             
             if(planetNumber == 6){
                 GLUquadric *ring = gluNewQuadric();
@@ -357,12 +345,9 @@ void Planet::draw()
                 gluDisk(ring, 400, 600, 90, 10);
                 gluDeleteQuadric(ring);
             }
-            
             if(planetNumber == 3){
                 moon->draw();
             }
-            
-            
         }
         glPopMatrix();
     }
@@ -372,19 +357,16 @@ void Planet::draw()
             glRotatef(90, 1, 0, 0);
             glRotatef(obliquity, 1, 0, 0);
             glRotatef(rotationAngle, 0, 0, 1);
-            gluSphere(qobj,radius,50,50);
-            gluDeleteQuadric(qobj);
+            gluSphere(planetQuad,radius,50,50);
+            gluDeleteQuadric(planetQuad);
         }
         glPopMatrix();
     }
-    
-    
 }
 
 void Planet::update(int velocity)
 {
     // ====== TRANSLATION ======
-    
     if(currentDay < 360){
         currentDay = currentDay + (day/velocity);
     } else {

@@ -1,10 +1,9 @@
-//  Guillermo Barrientos González
-//  A0332278
 //
+//  main.cpp
+//  main
 //
 //  Computer Graphics. TC3022.
-//  Basic TGA textures.
-//  Displays a textured cube with vertices, normals and texture coordinates.
+//  Created by Guillermo Barrientos on 10/11/18.
 //
 
 
@@ -20,6 +19,7 @@
 #include "Camera.hpp"
 #include "cPlanet.hpp"
 #include "cSkybox.hpp"
+#include "cSpacecraft.hpp"
 
 
 // ==== CAMERA ====
@@ -47,8 +47,6 @@ Planet* saturn;
 Planet* uranus;
 Planet* neptune;
 
-GLfloat rotation;                                 // por borrar y pasarlo a planetas
-
 // ==== MATERIAL ====
 
 GLfloat* mat0_specular;
@@ -56,8 +54,13 @@ GLfloat* mat0_diffuse;
 GLfloat* mat0_shininess;
 GLfloat* light0_position;
 
+// ==== SCRAFT ====
+GLMmodel* model;
+Spacecraft* spacecraft;
+
 // ==== OTHERS ====
 bool play;
+bool draw;
 int velocity;
 
 
@@ -66,13 +69,14 @@ void init( void )
     // ==== OTHERS (INIT) ====
     
     play = false;
+    draw = true;
     velocity = 8;
+    
+    // ==== SPACECRAFT (INIT) ====
+    spacecraft = new Spacecraft();
     
     // ==== CAMERA (INIT) ====
     
-    //glPopMatrix();
-    
-    //sceneCam.setPos(500, 100.0, -250);
     // sceneCam.setPos(0, 0, -2000000); // for real
     sceneCam.setPos(0, 0, -1400); // for ficticial
     sceneCam.setDirVec(0, 0, 1);
@@ -87,16 +91,13 @@ void init( void )
     posZ = -1400;
     lightCam.setPos(0, 0, -1400);
     lightCam.setDirVec(0, 0, 1);
-    //lightCam.setPos(-3500, -2000, -1000);  // perspective
-    //lightCam.setDirVec(1, 0.25, 0); // perspective
     lightCam.setPivot(0,0,0);
     lightCam.fov = 45;
     lightCam.setUpVec(0, -1, 0);
     lightCam.near_plane = 0.1;
     lightCam.far_plane = 4000000.0f;
     
-    
-    currentCamera = &lightCam; //    INITIAL CAMERA
+    currentCamera = &lightCam;
     
     // ==== SKYBOX (INIT) =====
     
@@ -114,24 +115,19 @@ void init( void )
     uranus = new Planet(7, 40, 0.1);
     neptune = new Planet(8, 40, 0.1);
     
-    
-    glEnable(GL_TEXTURE_2D);                                    // pendiente por acomodar
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glShadeModel(GL_SMOOTH);
-    
     // ==== MATERIAL (INIT) =====
     
     mat0_specular = new GLfloat[4];
-    mat0_specular[0] = 1.0f; // S0r
-    mat0_specular[1] = 1.0f; // S0g
-    mat0_specular[2] = 1.0f; // S0b
-    mat0_specular[3] = 1.0f; // S0a
+    mat0_specular[0] = 1.0f;
+    mat0_specular[1] = 1.0f;
+    mat0_specular[2] = 1.0f;
+    mat0_specular[3] = 1.0f;
     
     mat0_diffuse = new GLfloat[4];
-    mat0_diffuse[0] = 1.0f; // D0r
-    mat0_diffuse[1] = 0.0f; // D0g
-    mat0_diffuse[2] = 0.0f; // D0b
-    mat0_diffuse[3] = 1.0f; // D0a
+    mat0_diffuse[0] = 1.0f;
+    mat0_diffuse[1] = 0.0f;
+    mat0_diffuse[2] = 0.0f;
+    mat0_diffuse[3] = 1.0f;
     
     mat0_shininess = new GLfloat[1];
     mat0_shininess[0] = 60.0f;
@@ -139,20 +135,20 @@ void init( void )
     // ==== LIGTH (INIT) ====
     
     light0_position = new GLfloat[4];
-    light0_position[0] = 1.0f; // L0x
-    light0_position[1] = 1.0f; // L0y
-    light0_position[2] = 1.0f; // L0z
-    light0_position[3] = 0.0f; // L0w
+    light0_position[0] = 1.0f;
+    light0_position[1] = 1.0f;
+    light0_position[2] = 1.0f;
+    light0_position[3] = 0.0f;
     
+    glEnable(GL_TEXTURE_2D);
+    glShadeModel(GL_SMOOTH);
     glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glEnable(GL_DEPTH_TEST);
-    
-    rotation = 0.0f;                                          // por borrar y pasarlo a planetas
 }
 
-void mouse( int button, int state, int x, int y)              // POSIBLEMENTE POR BORRAR Y CAMBIAR POR TECLAS
+void mouse( int button, int state, int x, int y)
 {
     int mods;
     mouseCoords[0] = x;
@@ -183,33 +179,27 @@ void mouse( int button, int state, int x, int y)              // POSIBLEMENTE PO
     }
 }
 
-void motion(int x, int y)                                   // CHECAR MOVIMIENTO DE LA CÁMARA
+void motion(int x, int y)
 {
     if(!draggedCamera) return;
     if(mouseMotionType == 4) {
-        //Type 4: Zoom
-        draggedCamera->moveForward((mouseCoords[1] - y) * 0.05); // zTrans += (mouseCoords[1] - y) * 0.02;
+        draggedCamera->moveForward((mouseCoords[1] - y) * 0.05);
         draggedCamera->rotate((mouseCoords[0] - x) * 0.2, 0, 1, 0);
         mouseCoords[0] = x;
         mouseCoords[1] = y;
     } else if(mouseMotionType == 2) {
-        // Type 2: Translation on X / Y
-        draggedCamera->rotate((mouseCoords[1] - y) * 0.1, 1, 0, 0); // xTrans += (x - mouseCoords[0]) * 0.02;
-        draggedCamera->rotate((x - mouseCoords[0]) * 0.1, 0, 0, 1); // yTrans += (mouseCoords[1] - y) * 0.02;
+        draggedCamera->rotate((mouseCoords[1] - y) * 0.1, 1, 0, 0);
+        draggedCamera->rotate((x - mouseCoords[0]) * 0.1, 0, 0, 1);
         mouseCoords[0] = x;
         mouseCoords[1] = y;
     } else if(mouseMotionType == 3) {
-        // Type 3: Tilt
-        draggedCamera->moveUp((mouseCoords[1] - y) * 0.05);   // yTrans += (y - mouseCoords[1]) * 0.02;
-        draggedCamera->moveLeft((mouseCoords[0] - x) * 0.05); // xTrans += (mouseCoords[0] - x) * 0.02;
-        
+        draggedCamera->moveUp((mouseCoords[1] - y) * 0.05);
+        draggedCamera->moveLeft((mouseCoords[0] - x) * 0.05);
         mouseCoords[0] = x;
         mouseCoords[1] = y;
     } else if(mouseMotionType == 1) {
-        // Type 1: Rotate scene
-        draggedCamera->moveAround((mouseCoords[1] - y) * 0.1, 1, 0, 0);   // yTrans += (y - mouseCoords[1]) * 0.02;
-        draggedCamera->moveAround((mouseCoords[0] - x) * 0.1, 0, 1, 0); // xTrans += (mouseCoords[0] - x) * 0.02;
-        
+        draggedCamera->moveAround((mouseCoords[1] - y) * 0.1, 1, 0, 0);
+        draggedCamera->moveAround((mouseCoords[0] - x) * 0.1, 0, 1, 0);
         mouseCoords[0] = x;
         mouseCoords[1] = y;
     }
@@ -246,22 +236,6 @@ void keys (unsigned char key, int x, int y)
                 sceneCam.moveLeft(100);
             }
             break;
-            /*
-             case 'w':
-             if(currentCamera == &lightCam){
-             lightCam.moveUp(100);
-             } else{
-             sceneCam.moveUp(100);
-             }
-             break;
-             case 's':
-             if(currentCamera == &lightCam){
-             lightCam.moveDown(100);
-             } else {
-             sceneCam.moveDown(100);
-             }
-             break;
-             */
         case 'w':
             if(currentCamera == &lightCam){
                 lightCam.moveForward(100);
@@ -297,15 +271,44 @@ void keys (unsigned char key, int x, int y)
         case '-':
             velocity += 2;
             break;
+            
+            //  ==== DRAW ====
+            
+        case 'z':
+            if(draw)
+            {
+                draw = false;
+            }
+            else{
+                draw = true;
+            }
+            break;
+            
+            //  ==== SPACECRAFT ====
+            
+        case 'i':
+            spacecraft->angleV += 5;
+            spacecraft->vertical = true;
+            break;
+        case 'k':
+            spacecraft->angleV -= 5;
+            spacecraft->vertical = true;
+            break;
+        case 'j':
+            spacecraft->angleH -= 5;
+            spacecraft->horizontal = true;
+            
+            break;
+        case 'l':
+            spacecraft->angleH += 5;
+            spacecraft->horizontal = true;
+            break;
     }
 }
 
 void display( void )
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    
-    //glPopMatrix(); // RESET
-    //glPopMatrix();
     
     // ==== MATERIAL (DISPLAY) ====
     
@@ -315,22 +318,27 @@ void display( void )
     
     // ==== PLANET (DISPLAY) ====
     
-    sun->draw();
-    mercury->draw();
-    venus->draw();
-    earth->draw();
-    mars->draw();
-    jupiter->draw();
-    saturn->draw();
-    uranus->draw();
-    neptune->draw();
+    if(draw){
+        sun->draw();
+        mercury->draw();
+        venus->draw();
+        earth->draw();
+        mars->draw();
+        jupiter->draw();
+        saturn->draw();
+        uranus->draw();
+        neptune->draw();
+    }
     
-    sceneCam.setPos(earth->pos[0], earth->pos[1], earth->pos[2]-800);
+    
+    glPushMatrix();
+    spacecraft->draw();
+    glPopMatrix();
     
     // ==== CAMERA (DISPLAY) ====
     
     currentCamera->setView();
-    //sceneCam.setPos(earth->pos[0], earth->pos[1], earth->pos[2]+200);
+    sceneCam.setPos(earth->pos[0], earth->pos[1], earth->pos[2]-800);
     //sceneCam.draw();
     
     // ==== SKYBOX (DISPLAY) ====
@@ -364,19 +372,16 @@ void reshape( int w, int h )
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport(0, 0, w, h);
-    //camRatio = (float)w / h;
-    //printf("%.3f\n",camRatio);
     currentCamera->setView();
 }
 
 int main( int argc, char** argv )
 {
-    //srand(time(NULL));
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize (1100, 800);
     glutInitWindowPosition (100, 100);
-    glutCreateWindow ("Project Solar System");
+    glutCreateWindow ("Solar System A01332278");
     glutReshapeFunc (reshape);
     init ();
     glutMouseFunc(mouse);

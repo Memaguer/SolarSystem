@@ -25,7 +25,7 @@ Skybox::Skybox(float side)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     LoadTGA(&targas, "/Users/MemoBG/Documents/ITC/8º semestre/Gráficas Computacionales/Proyectos/SolarSystem/SolarSystem/assets/starts.tga");
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, targas.width, targas.height, 0, GL_RGB, GL_UNSIGNED_BYTE, targas.imageData);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    //glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 Skybox::~Skybox(void)
